@@ -1,0 +1,11 @@
+# Dependencies
+node_modules/
+
+# Security
+.env
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+.idea
