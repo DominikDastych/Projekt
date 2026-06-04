@@ -2,81 +2,110 @@ const searchButton = document.getElementById('search-button');
 const searchInput = document.getElementById('search-input');
 const movieContainer = document.getElementById('movie-container');
 
+const modal = document.getElementById('modal');
+const closeModal = document.getElementById('close-modal');
+
+const modalImg = document.getElementById('modal-img');
+const modalTitle = document.getElementById('modal-title');
+const modalRating = document.getElementById('modal-rating');
+const modalDescription = document.getElementById('modal-description');
+
+
 // ── HLAVNÍ FUNKCE HLEDÁNÍ ──
-// Spustí se po kliknutí na tlačítko nebo stisknutí Enter
-const fetchMovies = async () => {
-    const query = searchInput.value;
 
-    // Kontrola prázdného pole – upozorní uživatele
-    if (!query) {
-        alert('Please enter a movie title');
-        return;
-    }
+const fetchMovies = async (defaultQuery = 'star') => {
+    const query = searchInput.value || defaultQuery;
 
-    // Zobrazení načítání dokud server neodpoví
     movieContainer.innerHTML = '<p>Loading movies...</p>';
 
     try {
-        // Volání backendu (server.js) – ten se stará o TMDB API klíč
-        // encodeURIComponent zajistí správné kódování speciálních znaků v názvu
-        const response = await fetch(`http://localhost:3000/api/search?query=${encodeURIComponent(query)}`);
+        const response = await fetch(
+            `http://localhost:3000/api/search?query=${encodeURIComponent(query)}`
+        );
 
-        // Převod odpovědi ze serveru do JS pole objektů
         const movies = await response.json();
 
-        // Předání dat do funkce pro vykreslení karet
         renderMovies(movies);
     } catch (error) {
-        // Chyba sítě nebo server neběží
         console.error('Fetch error:', error);
         movieContainer.innerHTML = '<p>Error loading data from server.</p>';
     }
 };
 
-// ── RENDEROVÁNÍ FILMOVÝCH KARET ──
-// Přijme pole filmů z TMDB API a vykreslí je do #movie-container
-const renderMovies = (movies) => {
-    movieContainer.innerHTML = ''; // Vymazání předchozích výsledků
 
-    // Pokud TMDB nic nenašlo, zobrazí zprávu
+// ── VYKRESLENÍ KARET ──
+
+const renderMovies = (movies) => {
+    movieContainer.innerHTML = '';
+
     if (movies.length === 0) {
         movieContainer.innerHTML = '<p>No movies found.</p>';
         return;
     }
 
-    // Iterace přes každý film a vytvoření HTML karty
     movies.forEach(movie => {
         const movieCard = document.createElement('div');
-        movieCard.className = 'movie-card'; // Třída pro CSS stylování
+        movieCard.className = 'movie-card';
 
-        // TMDB vrací datum ve formátu YYYY-MM-DD, stačí nám jen rok
-        const releaseYear = movie.release_date ? movie.release_date.split('-')[0] : 'N/A';
+        const releaseYear = movie.release_date
+            ? movie.release_date.split('-')[0]
+            : 'N/A';
 
-        // Pokud film nemá poster, použije se placeholder obrázek
         const posterUrl = movie.poster_path
             ? `https://image.tmdb.org/t/p/w300${movie.poster_path}`
             : 'https://via.placeholder.com/300x450?text=No+Poster';
 
-        // Vložení HTML struktury karty s daty z TMDB
         movieCard.innerHTML = `
-            <img src="${posterUrl}" alt="${movie.title}" width="200">
-            <div>
-                <h2>${movie.title} (${releaseYear})</h2>
-                <p><strong>Rating:</strong> ${movie.vote_average}/10</p>
-                <p>${movie.overview || 'No description available.'}</p>
-            </div>
-            <hr>
-        `;
+    <img src="${posterUrl}" alt="${movie.title}">
+    <div>
+        <h2>${movie.title} (${releaseYear})</h2>
+        <p><strong>Rating:</strong> ${movie.vote_average.toFixed(1)}/10</p>
+        <span class="detail-badge">Klikni pro detail</span>
+    </div>
+`;
 
-        // Přidání hotové karty do stránky
+        movieCard.addEventListener('click', () => {
+            openMovieDetail(movie, posterUrl);
+        });
+
         movieContainer.appendChild(movieCard);
     });
 };
 
-// Kliknutí na tlačítko spustí hledání
-searchButton.addEventListener('click', fetchMovies);
 
-// Stisknutí Enter v inputu spustí hledání (stejné chování jako tlačítko)
-searchInput.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') fetchMovies();
+// ── DETAIL FILMU ──
+
+const openMovieDetail = (movie, posterUrl) => {
+    modalImg.src = posterUrl;
+    modalTitle.textContent = movie.title;
+    modalRating.textContent = `Rating: ${movie.vote_average}/10`;
+    modalDescription.textContent =
+        movie.overview || 'No description available.';
+
+    modal.style.display = 'flex';
+};
+
+
+// ── ZAVŘENÍ DETAILU ──
+
+closeModal.addEventListener('click', () => {
+    modal.style.display = 'none';
 });
+
+
+// ── HLEDÁNÍ ──
+
+searchButton.addEventListener('click', () => {
+    fetchMovies();
+});
+
+searchInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        fetchMovies();
+    }
+});
+
+
+// ── ÚVODNÍ FILMY PO SPUŠTĚNÍ ──
+
+fetchMovies();

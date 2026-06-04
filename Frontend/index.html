@@ -11,19 +11,58 @@
 <!-- HLAVIČKA SE SEARCHBAREM -->
 <header>
     <h1>Cine<span>Vault</span></h1>
+
     <div class="search-wrap">
-        <input type="text" id="search-input" placeholder="Hledat filmy nebo seriály…" autocomplete="off">
+        <input type="text" id="search-input" placeholder="Hledat filmy nebo seriály..." autocomplete="off">
         <button id="search-button">Hledat</button>
     </div>
 </header>
 
-<!-- SEM FRONTEND-MAIN.JS VKLÁDÁ FILMOVÉ KARTY -->
+<!-- HLAVNÍ OBSAH STRÁNKY -->
 <main>
+
+    <!-- ÚVODNÍ SEKCE -->
+    <section class="hero">
+        <div class="hero-content">
+            <h2>CineVault</h2>
+            <p>
+                Prozkoumávej svět filmů a seriálů. Zobraz si hodnocení,
+                popis i detailní informace o každém titulu.
+            </p>
+        </div>
+    </section>
+
+    <!-- NADPIS SEKCE -->
+    <h2 class="section-title">Výsledky vyhledávání</h2>
+
+    <!-- SEM FRONTEND-MAIN.JS VKLÁDÁ FILMOVÉ KARTY -->
     <div id="movie-container">
-        <p class="hint">Zadej název filmu a klikni na Hledat.</p>
+        <p class="hint">Načítám filmy...</p>
     </div>
+
 </main>
 
+<!-- DETAIL FILMU -->
+<div id="modal" class="modal">
+    <div class="modal-box">
+
+        <!-- ZAVŘENÍ DETAILU -->
+        <span id="close-modal">&times;</span>
+
+        <!-- PLAKÁT FILMU -->
+        <img id="modal-img" src="" alt="Movie Poster">
+
+        <!-- INFORMACE O FILMU -->
+        <div class="modal-text">
+            <h2 id="modal-title"></h2>
+            <p id="modal-rating"></p>
+            <p id="modal-description"></p>
+        </div>
+
+    </div>
+</div>
+
 <script src="frontend-main.js"></script>
+
 </body>
 </html>

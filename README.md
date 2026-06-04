@@ -12,7 +12,7 @@ Vyhledávání filmů a seriálů podle názvu
 Zobrazení plakátu, hodnocení a popisu
 Přidávání filmů do Watchlistu
 Historie vyhledávání
-Srovnávání filmů
+Srovnávání filmůser
 Uživatelské účty (registrace/přihlášení)
 Admin panel (správa uživatelů, logy, nastavení API)
 Tým
