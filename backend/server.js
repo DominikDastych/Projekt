@@ -19,7 +19,7 @@ app.use(cors());
 app.use(express.json());
 
 // Servírování statických souborů (index.html, main.js, CSS) ze stejné složky
-app.use(express.static(path.join(__dirname, '.')));
+app.use(express.static(path.join(__dirname, '../Frontend')));
 
 // ── API ENDPOINT: HLEDÁNÍ FILMŮ ──
 // Frontend volá: GET /api/search?query=název_filmu
@@ -59,7 +59,7 @@ app.get('/api/search', async (req, res) => {
 // ── ZÁKLADNÍ ROUTE ──
 // Zobrazí se pokud někdo otevře server přímo bez index.html
 app.get('/', (req, res) => {
-    res.send('Movie Dashboard Server is running. Open your browser at http://localhost:3000 to see the app.');
+    res.sendFile(path.join(__dirname, '../Frontend/index.html'));
 });
 
 // ── SPUŠTĚNÍ SERVERU ──
