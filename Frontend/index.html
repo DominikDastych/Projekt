@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CineVault</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- HLAVIČKA SE SEARCHBAREM -->
+<!-- HLAVIČKA -->
 <header>
     <h1>Cine<span>Vault</span></h1>
 
@@ -16,53 +17,116 @@
         <input type="text" id="search-input" placeholder="Hledat filmy nebo seriály..." autocomplete="off">
         <button id="search-button">Hledat</button>
     </div>
+
+    <nav class="header-nav">
+        <button class="nav-btn" id="btn-favorites"><i class="fa-solid fa-star"></i> Oblíbené</button>
+        <button class="nav-btn" id="btn-history"><i class="fa-solid fa-clock-rotate-left"></i> Historie</button>
+        <button class="nav-btn" id="btn-settings"><i class="fa-solid fa-gear"></i> Nastavení</button>
+        <button class="nav-btn nav-auth" id="btn-auth"><i class="fa-solid fa-right-to-bracket"></i> Přihlásit se</button>
+    </nav>
 </header>
 
-<!-- HLAVNÍ OBSAH STRÁNKY -->
+<!-- HLAVNÍ OBSAH -->
 <main>
-
-    <!-- ÚVODNÍ SEKCE -->
-    <section class="hero">
+    <section class="hero" id="hero-section">
         <div class="hero-content">
             <h2>CineVault</h2>
-            <p>
-                Prozkoumávej svět filmů a seriálů. Zobraz si hodnocení,
-                popis i detailní informace o každém titulu.
-            </p>
+            <p>Prozkoumávej svět filmů a seriálů. Zobraz si hodnocení, popis i detailní informace o každém titulu.</p>
         </div>
     </section>
 
-    <!-- NADPIS SEKCE -->
-    <h2 class="section-title">Výsledky vyhledávání</h2>
+    <div class="view-tabs">
+        <button class="tab active" id="tab-search">Výsledky vyhledávání</button>
+        <button class="tab" id="tab-fav-view"><i class="fa-solid fa-star"></i> Oblíbené</button>
+    </div>
 
-    <!-- SEM FRONTEND-MAIN.JS VKLÁDÁ FILMOVÉ KARTY -->
     <div id="movie-container">
         <p class="hint">Načítám filmy...</p>
     </div>
-
 </main>
 
 <!-- DETAIL FILMU -->
 <div id="modal" class="modal">
     <div class="modal-box">
-
-        <!-- ZAVŘENÍ DETAILU -->
         <span id="close-modal">&times;</span>
-
-        <!-- PLAKÁT FILMU -->
         <img id="modal-img" src="" alt="Movie Poster">
-
-        <!-- INFORMACE O FILMU -->
         <div class="modal-text">
             <h2 id="modal-title"></h2>
             <p id="modal-rating"></p>
             <p id="modal-description"></p>
+            <button id="modal-fav-btn" class="fav-btn"><i class="fa-regular fa-star"></i> Přidat do oblíbených</button>
         </div>
-
     </div>
 </div>
 
-<script src="frontend-main.js"></script>
+<!-- AUTH MODAL -->
+<div id="auth-modal" class="modal">
+    <div class="modal-box auth-box">
+        <span class="close-btn" id="close-auth">&times;</span>
 
+        <div class="auth-tabs">
+            <button class="auth-tab active" data-tab="login">Přihlásit se</button>
+            <button class="auth-tab" data-tab="register">Registrace</button>
+        </div>
+
+        <form id="login-form" class="auth-form">
+            <h3>Přihlásit se</h3>
+            <input type="text" id="login-username" placeholder="Uživatelské jméno">
+            <input type="password" id="login-password" placeholder="Heslo">
+            <button type="submit">Přihlásit se</button>
+            <p class="auth-msg" id="login-msg"></p>
+        </form>
+
+        <form id="register-form" class="auth-form hidden">
+            <h3>Registrace</h3>
+            <input type="text" id="reg-username" placeholder="Uživatelské jméno (min. 3 znaky)">
+            <input type="password" id="reg-password" placeholder="Heslo (min. 4 znaky)">
+            <input type="password" id="reg-password2" placeholder="Heslo znovu">
+            <button type="submit">Zaregistrovat se</button>
+            <p class="auth-msg" id="reg-msg"></p>
+        </form>
+    </div>
+</div>
+
+<!-- SETTINGS MODAL -->
+<div id="settings-modal" class="modal">
+    <div class="modal-box settings-box">
+        <span class="close-btn" id="close-settings">&times;</span>
+        <h2>Nastavení</h2>
+
+        <div class="settings-row">
+            <span>Světlý režim</span>
+            <label class="switch">
+                <input type="checkbox" id="light-mode-toggle">
+                <span class="slider round"></span>
+            </label>
+        </div>
+
+        <div class="settings-row">
+            <span>Historie vyhledávání</span>
+            <button id="clear-history-btn" class="btn-secondary">Smazat historii</button>
+        </div>
+
+        <div class="settings-row" id="settings-user-row">
+            <span id="settings-username-label">Nejsi přihlášen/a</span>
+            <button id="logout-btn" class="btn-danger hidden">Odhlásit se</button>
+        </div>
+    </div>
+</div>
+
+<!-- HISTORY PANEL (boční panel) -->
+<div id="history-panel" class="side-panel">
+    <div class="panel-header">
+        <h3><i class="fa-solid fa-clock-rotate-left"></i> Historie vyhledávání</h3>
+        <span id="close-history">&times;</span>
+    </div>
+    <ul id="history-list"></ul>
+    <div class="panel-footer">
+        <button id="clear-history-side-btn" class="btn-secondary">Smazat vše</button>
+    </div>
+</div>
+<div id="panel-overlay" class="panel-overlay"></div>
+
+<script src="frontend-main.js"></script>
 </body>
 </html>
