@@ -1,4 +1,4 @@
-+const searchButton = document.getElementById('search-button');
+const searchButton = document.getElementById('search-button');
 const searchInput = document.getElementById('search-input');
 const movieContainer = document.getElementById('movie-container');
 
