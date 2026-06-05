@@ -87,8 +87,22 @@ app.get('/', (req, res) => {
 
 // ── SPUŠTĚNÍ SERVERU ──
 app.listen(PORT, () => {
-    console.log('==============================================');
-    console.log(`  CINEVAULT SERVER IS LIVE!`);
-    console.log(`  URL: http://localhost:${PORT}`);
-    console.log('==============================================');
+    console.log('');
+    console.log('╔══════════════════════════════════════════════╗');
+    console.log('║                                              ║');
+    console.log('║   🎬  C I N E V A U L T   S E R V E R  🎬      ║');
+    console.log('║                                              ║');
+    console.log('╠══════════════════════════════════════════════╣');
+    console.log('║                                              ║');
+    console.log(`║   🟢  Status   : ONLINE & READY               ║`);
+    console.log(`║   🌐  URL      : http://localhost:${PORT}        ║`);
+    console.log(`║   ⚡  Mode     : ${process.env.NODE_ENV || 'development'}                  ║`);
+    console.log(`║   🕐  Started  : ${new Date().toLocaleTimeString()}                     ║`);
+    console.log('║                                              ║');
+    console.log('╠══════════════════════════════════════════════╣');
+    console.log('║                                              ║');
+    console.log('║     🤯 🤯 🤯  LIGHTS, CAMERA, ACTION!  🤯 🤯 🤯    ║');
+    console.log('║                                              ║');
+    console.log('╚══════════════════════════════════════════════╝');
+    console.log('');
 });
