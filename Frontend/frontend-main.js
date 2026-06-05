@@ -10,6 +10,8 @@ const modalTitle = document.getElementById('modal-title');
 const modalRating = document.getElementById('modal-rating');
 const modalDescription = document.getElementById('modal-description');
 const modalFavBtn = document.getElementById('modal-fav-btn');
+const modalTrailerBtn = document.getElementById('modal-trailer-btn');
+const modalTrailerContainer = document.getElementById('modal-trailer');
 
 const authModal = document.getElementById('auth-modal');
 const closeAuth = document.getElementById('close-auth');
@@ -354,10 +356,9 @@ tabSearch.addEventListener('click', () => {
 const openModal = (el) => { el.style.display = 'flex'; };
 const closeModalEl = (el) => { el.style.display = 'none'; };
 
-[modal, authModal, settingsModal].forEach(m => {
-    m.addEventListener('click', (e) => {
-        if (e.target === m) closeModalEl(m);
-    });
+modal.addEventListener('click', (e) => { if (e.target === modal) closeAndResetModal(); });
+[authModal, settingsModal].forEach(m => {
+    m.addEventListener('click', (e) => { if (e.target === m) closeModalEl(m); });
 });
 
 
@@ -453,7 +454,7 @@ const renderMovies = (movies, storeAsLast = false) => {
 // DETAIL FILMU
 // ════════════════════════════════
 
-const openMovieDetail = (movie, posterUrl) => {
+const openMovieDetail = async (movie, posterUrl) => {
     currentMovie = movie;
     modalImg.src = posterUrl;
     modalTitle.textContent = movie.title;
@@ -463,7 +464,26 @@ const openMovieDetail = (movie, posterUrl) => {
     ].filter(Boolean).join('  ');
     modalDescription.textContent = movie.overview || 'Popis není k dispozici.';
     updateModalFavBtn();
+
+    // Reset trailer
+    modalTrailerBtn.classList.add('hidden');
+    modalTrailerBtn.classList.remove('active');
+    modalTrailerBtn.innerHTML = '<i class="fa-solid fa-play"></i> Přehrát trailer';
+    modalTrailerBtn.dataset.key = '';
+    modalTrailerContainer.classList.add('hidden');
+    modalTrailerContainer.innerHTML = '';
+
     openModal(modal);
+
+    // Načtení traileru na pozadí
+    try {
+        const res = await fetch(`/api/trailer/${movie.id}`);
+        const trailer = await res.json();
+        if (trailer && trailer.key) {
+            modalTrailerBtn.dataset.key = trailer.key;
+            modalTrailerBtn.classList.remove('hidden');
+        }
+    } catch {}
 };
 
 const updateModalFavBtn = () => {
@@ -497,7 +517,31 @@ modalFavBtn.addEventListener('click', () => {
     }
 });
 
-closeModal.addEventListener('click', () => closeModalEl(modal));
+modalTrailerBtn.addEventListener('click', () => {
+    const key = modalTrailerBtn.dataset.key;
+    if (!key) return;
+
+    const isOpen = !modalTrailerContainer.classList.contains('hidden');
+    if (isOpen) {
+        modalTrailerContainer.innerHTML = '';
+        modalTrailerContainer.classList.add('hidden');
+        modalTrailerBtn.classList.remove('active');
+        modalTrailerBtn.innerHTML = '<i class="fa-solid fa-play"></i> Přehrát trailer';
+    } else {
+        modalTrailerContainer.innerHTML = `<iframe src="https://www.youtube.com/embed/${key}?autoplay=1" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
+        modalTrailerContainer.classList.remove('hidden');
+        modalTrailerBtn.classList.add('active');
+        modalTrailerBtn.innerHTML = '<i class="fa-solid fa-eye-slash"></i> Skrýt trailer';
+    }
+});
+
+const closeAndResetModal = () => {
+    modalTrailerContainer.innerHTML = '';
+    modalTrailerContainer.classList.add('hidden');
+    closeModalEl(modal);
+};
+
+closeModal.addEventListener('click', closeAndResetModal);
 
 
 // ════════════════════════════════

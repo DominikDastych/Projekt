@@ -60,6 +60,24 @@ app.post('/api/login', (req, res) => {
     res.json({ success: true, username: user.username });
 });
 
+// ── TRAILER ──
+app.get('/api/trailer/:id', async (req, res) => {
+    const movieId = req.params.id;
+    try {
+        const response = await axios.get(`https://api.themoviedb.org/3/movie/${movieId}/videos`, {
+            params: { api_key: TMDB_API_KEY }
+        });
+        const videos = response.data.results;
+        const trailer = videos.find(v => v.type === 'Trailer' && v.site === 'YouTube')
+            || videos.find(v => v.site === 'YouTube')
+            || null;
+        res.json(trailer);
+    } catch (error) {
+        console.error('Trailer Error:', error.message);
+        res.status(500).json({ error: 'Failed to fetch trailer' });
+    }
+});
+
 // ── HLEDÁNÍ FILMŮ ──
 app.get('/api/search', async (req, res) => {
     const movieTitle = req.query.query;

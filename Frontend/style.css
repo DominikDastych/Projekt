@@ -342,19 +342,75 @@ main {
     max-height: 90vh;
     border-radius: 16px;
     display: flex;
-    gap: 25px;
+    flex-direction: column;
+    gap: 20px;
     padding: 25px;
     position: relative;
     overflow-y: auto;
 }
 
 /* ── DETAIL MODÁL ── */
-.modal-box > img {
-    width: 260px;
-    min-width: 260px;
+.modal-top {
+    display: flex;
+    gap: 25px;
+}
+
+.modal-top > img {
+    width: 220px;
+    min-width: 220px;
     border-radius: 12px;
     object-fit: cover;
     align-self: flex-start;
+}
+
+/* ── TRAILER ── */
+.modal-trailer {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 */
+    height: 0;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.modal-trailer iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.modal-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.trailer-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: #cc0000;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s, background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.trailer-btn:hover { opacity: 0.85; }
+
+.trailer-btn.active {
+    background: var(--surface2);
+    color: var(--text);
+    border-color: var(--border);
+    opacity: 1;
 }
 
 .modal-text { flex: 1; }
@@ -392,7 +448,6 @@ main {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    margin-top: 12px;
     padding: 10px 20px;
     background: var(--surface2);
     border: 1px solid var(--border);
@@ -742,11 +797,15 @@ input:checked + .slider::before {
     .hero-content h2 { font-size: 30px; }
 
     .modal-box {
-        flex-direction: column;
         padding: 20px;
+        gap: 16px;
     }
 
-    .modal-box > img {
+    .modal-top {
+        flex-direction: column;
+    }
+
+    .modal-top > img {
         width: 100%;
         min-width: unset;
     }

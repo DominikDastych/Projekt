@@ -49,13 +49,21 @@
 <div id="modal" class="modal">
     <div class="modal-box">
         <span id="close-modal">&times;</span>
-        <img id="modal-img" src="" alt="Movie Poster">
-        <div class="modal-text">
-            <h2 id="modal-title"></h2>
-            <p id="modal-rating"></p>
-            <p id="modal-description"></p>
-            <button id="modal-fav-btn" class="fav-btn"><i class="fa-regular fa-star"></i> Přidat do oblíbených</button>
+
+        <div class="modal-top">
+            <img id="modal-img" src="" alt="Movie Poster">
+            <div class="modal-text">
+                <h2 id="modal-title"></h2>
+                <p id="modal-rating"></p>
+                <p id="modal-description"></p>
+                <div class="modal-actions">
+                    <button id="modal-fav-btn" class="fav-btn"><i class="fa-regular fa-star"></i> Přidat do oblíbených</button>
+                    <button id="modal-trailer-btn" class="trailer-btn hidden"><i class="fa-solid fa-play"></i> Přehrát trailer</button>
+                </div>
+            </div>
         </div>
+
+        <div id="modal-trailer" class="modal-trailer hidden"></div>
     </div>
 </div>
 
