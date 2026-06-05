@@ -44,6 +44,7 @@ let currentView = 'search';
 let lastResults = [];
 
 
+
 // ════════════════════════════════
 // UŽIVATEL / AUTH
 // ════════════════════════════════
@@ -314,6 +315,7 @@ const toggleFavorite = (movie) => {
     }
     localStorage.setItem(getFavKey(), JSON.stringify(favs));
 };
+
 
 const showFavorites = () => {
     if (!getUser()) {
